@@ -1,73 +1,1237 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MiniVerso 3D | Impressão 3D Personalizada</title>
-    <meta
-      name="description"
-      content="MiniVerso 3D cria peças personalizadas em impressão 3D com modelagem própria e pintura artesanal."
-    />
-    <link rel="stylesheet" href="./styles.css" />
-  </head>
-  <body>
-    <header class="hero">
-      <div class="container">
-        <div class="brand">
-          <div class="brand-mark" aria-hidden="true">M3D</div>
-          <div>
-            <p class="brand-label">Impressão 3D Personalizada</p>
-            <h1>MiniVerso 3D</h1>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- SEO Essencial -->
+  <title>MiniVerso 3D — Impressão 3D Personalizada com Modelagem e Pintura Artesanal</title>
+  <meta name="description"
+    content="Transforme memórias em objetos únicos. MiniVerso 3D cria miniaturas, luminárias e colecionáveis com modelagem 3D própria e pintura artesanal. Orçamento gratuito!" />
+  <meta name="keywords"
+    content="impressão 3D personalizada, miniatura personalizada, minimim, minipet, luminária 3D, funko personalizado, pintura artesanal 3D, colecionáveis 3D, action figure" />
+  <meta name="author" content="MiniVerso 3D" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://3dminiverso.com.br/" />
+
+  <!-- Open Graph (redes sociais) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://3dminiverso.com.br/" />
+  <meta property="og:title" content="MiniVerso 3D — Impressão 3D Personalizada" />
+  <meta property="og:description"
+    content="Miniaturas, luminárias e colecionáveis feitos sob medida com modelagem própria e pintura artesanal." />
+  <meta property="og:image" content="https://3dminiverso.com.br/og-image.jpg" />
+  <meta property="og:locale" content="pt_BR" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="MiniVerso 3D — Impressão 3D Personalizada" />
+  <meta name="twitter:description"
+    content="Transforme memórias em objetos únicos com impressão 3D artesanal e pintura à mão." />
+
+  <!-- Schema.org JSON-LD (SEO estruturado) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "MiniVerso 3D",
+    "description": "Impressão 3D personalizada com modelagem própria e pintura artesanal.",
+    "url": "https://3dminiverso.com.br",
+    "telephone": "+55-79-99927-8332",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Aracaju",
+      "addressRegion": "SE",
+      "addressCountry": "BR"
+    },
+    "sameAs": [
+      "https://instagram.com/3d_miniverso/",
+      "https://wa.me/5579999278332"
+    ]
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap"
+    rel="stylesheet" />
+
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #070e14;
+      --surface: #0d1820;
+      --border: #162030;
+      --cyan: #00bfc6;
+      --teal: #2d87ad;
+      --indigo: #4a5cad;
+      --cyan-dim: rgba(0, 191, 198, 0.12);
+      --text: #eef3f7;
+      --muted: #6b8899;
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.2rem 5vw;
+      background: rgba(7, 14, 20, 0.88);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      letter-spacing: 0.04em;
+      color: var(--text);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .logo span {
+      color: var(--cyan);
+    }
+
+    .logo-cube {
+      width: 28px;
+      height: 28px;
+      flex-shrink: 0;
+    }
+
+    nav ul {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      transition: color 0.2s;
+    }
+
+    nav a:hover {
+      color: var(--text);
+    }
+
+    .nav-cta {
+      background: var(--cyan);
+      color: #070e14 !important;
+      padding: 0.5rem 1.2rem;
+      border-radius: 4px;
+      font-weight: 600 !important;
+    }
+
+    .nav-cta:hover {
+      background: #00a8ae !important;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8rem 5vw 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-image {
+      position: absolute;
+      top: 24%;
+      left: 59%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .hero-image-label {
+      font-family: var(--font-display);
+      font-size: 5rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .hero-image-label strong {
+      color: var(--cyan);
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0, 191, 198, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 191, 198, 0.05) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 30%, transparent 100%);
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: 20%;
+      left: 55%;
+      width: 520px;
+      height: 520px;
+      background: radial-gradient(circle, rgba(45, 135, 173, 0.2) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 680px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--cyan);
+      margin-bottom: 1.4rem;
+    }
+
+    .eyebrow::before {
+      content: '';
+      width: 28px;
+      height: 2px;
+      background: var(--cyan);
+    }
+
+    h1 {
+      font-family: var(--font-display);
+      font-size: clamp(3.5rem, 8vw, 7rem);
+      line-height: 0.95;
+      letter-spacing: 0.01em;
+      margin-bottom: 1.6rem;
+    }
+
+    h1 em {
+      font-style: normal;
+      color: var(--cyan);
+    }
+
+    .hero-sub {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 480px;
+      margin-bottom: 2.4rem;
+      line-height: 1.8;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background: var(--cyan);
+      color: #070e14;
+      padding: 0.9rem 2rem;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      letter-spacing: 0.04em;
+      transition: background 0.2s, transform 0.15s;
+      display: inline-block;
+    }
+
+    .btn-primary:hover {
+      background: #00a8ae;
+      transform: translateY(-2px);
+    }
+
+    .btn-ghost {
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.9rem 2rem;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: border-color 0.2s, transform 0.15s;
+      display: inline-block;
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--muted);
+      transform: translateY(-2px);
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 2.5rem;
+      margin-top: 4rem;
+      flex-wrap: wrap;
+    }
+
+    .stat {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .stat-num {
+      font-family: var(--font-display);
+      font-size: 2.2rem;
+      letter-spacing: 0.02em;
+      color: var(--text);
+    }
+
+    .stat-label {
+      font-size: 0.78rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    /* ── SECTION BASE ── */
+    section {
+      padding: 6rem 5vw;
+    }
+
+    .section-tag {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--cyan);
+      font-weight: 600;
+      margin-bottom: 0.8rem;
+      display: block;
+    }
+
+    h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+
+    .section-lead {
+      color: var(--muted);
+      max-width: 520px;
+      font-size: 1rem;
+      line-height: 1.8;
+      margin-bottom: 3rem;
+    }
+
+    /* ── PRODUTOS ── */
+    #produtos {
+      background: var(--surface);
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    .service-card {
+      background: var(--surface);
+      padding: 2.4rem 2rem;
+      transition: background 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .service-card::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--cyan);
+      transform: scaleX(0);
+      transition: transform 0.3s;
+      transform-origin: left;
+    }
+
+    .service-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .service-card:hover {
+      background: #111f2c;
+    }
+
+    .service-icon {
+      font-size: 2rem;
+      margin-bottom: 1.2rem;
+      display: block;
+    }
+
+    .service-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      letter-spacing: 0.03em;
+      margin-bottom: 0.6rem;
+    }
+
+    .service-card p {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* ── CHIP LIST (também fazemos) ── */
+    .highlights {
+      margin-top: 3.5rem;
+    }
+
+    .highlights-label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+      font-weight: 600;
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .chip-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      list-style: none;
+    }
+
+    .chip {
+      padding: 0.5rem 1.1rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      font-size: 0.82rem;
+      color: var(--muted);
+      transition: all 0.2s;
+    }
+
+    .chip:hover {
+      border-color: var(--cyan);
+      color: var(--cyan);
+    }
+
+    /* ── COMO FUNCIONA ── */
+    #como-funciona {
+      background: var(--bg);
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      counter-reset: steps;
+    }
+
+    .step {
+      counter-increment: steps;
+      padding: 2rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      position: relative;
+    }
+
+    .step::before {
+      content: counter(steps, decimal-leading-zero);
+      font-family: var(--font-display);
+      font-size: 3.5rem;
+      color: var(--cyan-dim);
+      line-height: 1;
+      display: block;
+      margin-bottom: 1rem;
+    }
+
+    .step h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+
+    .step p {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* ── MATERIAIS ── */
+    #materiais {
+      background: var(--surface);
+    }
+
+    .materials-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+    }
+
+    .material-tag {
+      border: 1px solid var(--border);
+      padding: 0.6rem 1.2rem;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--muted);
+      transition: all 0.2s;
+      cursor: default;
+    }
+
+    .material-tag:hover {
+      border-color: var(--cyan);
+      color: var(--cyan);
+    }
+
+    .material-tag.highlight {
+      border-color: var(--cyan);
+      color: var(--cyan);
+      background: var(--cyan-dim);
+    }
+
+    /* ── DEPOIMENTOS ── */
+    #depoimentos {
+      background: var(--bg);
+    }
+
+    .carousel-wrapper {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .carousel-track {
+      display: flex;
+      gap: 1rem;
+      transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+      will-change: transform;
+    }
+
+    .feedback-item {
+      flex: 0 0 calc((100% - 2rem) / 3);
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      aspect-ratio: 3 / 4;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .feedback-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: filter 0.4s ease, opacity 0.4s ease;
+      filter: brightness(0.35) saturate(0.4);
+      opacity: 0.65;
+    }
+
+    .feedback-item:hover img {
+      filter: brightness(1) saturate(1);
+      opacity: 1;
+    }
+
+    .carousel-dots {
+      display: flex;
+      justify-content: center;
+      gap: 0.55rem;
+      margin-top: 1.8rem;
+    }
+
+    .carousel-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--border);
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      transition: background 0.25s, transform 0.25s;
+    }
+
+    .carousel-dot.active {
+      background: var(--cyan);
+      transform: scale(1.4);
+    }
+
+    /* Lightbox */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(0, 0, 0, 0.88);
+      align-items: center;
+      justify-content: center;
+      cursor: zoom-out;
+    }
+
+    .lightbox.open {
+      display: flex;
+    }
+
+    .lightbox img {
+      max-width: min(92vw, 480px);
+      max-height: 90vh;
+      border-radius: 10px;
+      box-shadow: 0 8px 60px rgba(0, 0, 0, 0.7);
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 1.2rem;
+      right: 1.4rem;
+      font-size: 2rem;
+      color: #fff;
+      cursor: pointer;
+      line-height: 1;
+      background: none;
+      border: none;
+    }
+
+    @media (max-width: 600px) {
+      .feedback-item {
+        flex: 0 0 100%;
+      }
+    }
+
+    /* ── FAQ ── */
+    #faq {
+      background: var(--surface);
+    }
+
+    .faq-list {
+      max-width: 720px;
+    }
+
+    .faq-item {
+      border-bottom: 1px solid var(--border);
+      padding: 1.4rem 0;
+    }
+
+    .faq-item summary {
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .faq-item summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .faq-item summary::after {
+      content: '+';
+      font-size: 1.2rem;
+      color: var(--cyan);
+      transition: transform 0.2s;
+    }
+
+    details[open] summary::after {
+      transform: rotate(45deg);
+    }
+
+    .faq-item p {
+      margin-top: 0.8rem;
+      color: var(--muted);
+      font-size: 0.88rem;
+      line-height: 1.8;
+    }
+
+    /* ── CTA FINAL ── */
+    #contato {
+      background: var(--bg);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #contato::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px;
+      height: 300px;
+      background: radial-gradient(ellipse, rgba(0, 191, 198, 0.09) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    #contato h2 {
+      margin-bottom: 1rem;
+    }
+
+    #contato p {
+      color: var(--muted);
+      margin-bottom: 2rem;
+    }
+
+    .contact-form {
+      display: flex;
+      gap: 0.8rem;
+      max-width: 440px;
+      margin: 0 auto;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .contact-form input {
+      flex: 1 1 220px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: 0.85rem 1.2rem;
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .contact-form input:focus {
+      border-color: var(--cyan);
+    }
+
+    .contact-form input::placeholder {
+      color: var(--muted);
+    }
+
+    .contact-form button {
+      background: var(--cyan);
+      color: #070e14;
+      border: none;
+      border-radius: 5px;
+      padding: 0.85rem 1.6rem;
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .contact-form button:hover {
+      background: #00a8ae;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 5vw;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-logo {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .footer-logo span {
+      color: var(--cyan);
+    }
+
+    .footer-cube {
+      width: 20px;
+      height: 20px;
+      margin-right: 0.4rem;
+    }
+
+    footer p {
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .footer-links a {
+      font-size: 0.78rem;
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    .footer-links a:hover {
+      color: var(--text);
+    }
+
+    /* ── FADE IN ── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(24px);
+      animation: fadeUp 0.7s ease forwards;
+    }
+
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .delay-1 {
+      animation-delay: 0.1s;
+    }
+
+    .delay-2 {
+      animation-delay: 0.25s;
+    }
+
+    .delay-3 {
+      animation-delay: 0.4s;
+    }
+
+    .delay-4 {
+      animation-delay: 0.55s;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      nav ul {
+        display: none;
+      }
+
+      .hero-stats {
+        gap: 1.5rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAV -->
+  <nav aria-label="Navegação principal">
+    <a href="/" class="logo" aria-label="MiniVerso 3D — início">
+      <svg class="logo-cube" viewBox="0 0 100 112" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <polygon points="50,2 98,28 50,54 2,28" fill="#2d87ad" />
+        <polygon points="2,28 50,54 50,110 2,84" fill="#00bfc6" />
+        <polygon points="98,28 50,54 50,110 98,84" fill="#4a5cad" />
+      </svg>
+      MINI<span>VERSO</span> 3D
+    </a>
+    <ul>
+      <li><a href="#produtos">Produtos</a></li>
+      <li><a href="#como-funciona">Como funciona</a></li>
+      <li><a href="#materiais">Materiais</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#contato" class="nav-cta">Orçamento</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <main>
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-content">
+        <span class="eyebrow fade-in">Impressão 3D Personalizada</span>
+        <h1 id="hero-title" class="fade-in delay-1">
+          SUAS<br>MEMÓRIAS<br>EM <em>OBJETOS</em><br>ÚNICOS
+        </h1>
+        <p class="hero-sub fade-in delay-2">
+          Miniaturas, luminárias e colecionáveis feitos sob medida.
+          Modelagem própria, pintura artesanal e acabamento premium.
+        </p>
+
+        <div class="hero-actions fade-in delay-3">
+          <a href="https://instagram.com/3d_miniverso" rel="noopener" target="_blank" class="btn-primary">
+            Conheça nosso trabalho
+          </a>
+          <a href="#contato" class="btn-primary">Solicitar orçamento</a>
+          <a href="#como-funciona" class="btn-ghost">Como funciona →</a>
+        </div>
+
+        <div class="hero-stats fade-in delay-4">
+          <div class="stat">
+            <span class="stat-num">100%</span>
+            <span class="stat-label">Modelagem própria</span>
+          </div>
+          <div class="stat">
+            <span class="stat-num">48h</span>
+            <span class="stat-label">Modelo pronto</span>
+          </div>
+          <div class="stat">
+            <span class="stat-num">Único</span>
+            <span class="stat-label">Cada peça é exclusiva</span>
           </div>
         </div>
-        <p class="hero-text">
-          Criamos peças únicas para você presentear, decorar e eternizar momentos com acabamento premium.
-        </p>
+
       </div>
-    </header>
 
-    <main>
-      <section class="section">
-        <div class="container">
-          <h2>Peças personalizadas</h2>
-          <ul class="grid-list">
-            <li><strong>Luminárias</strong> com tema exclusivo</li>
-            <li><strong>Minimim</strong> (funko personalizado da pessoa/artista)</li>
-            <li><strong>Minipet</strong> (boneco personalizado do seu animal)</li>
-            <li><strong>MiniBox</strong> (caixinha com música e foto especial)</li>
-            <li><strong>Copo para Monster</strong> personalizado</li>
-          </ul>
-        </div>
-      </section>
+      <div class="hero-image" aria-hidden="true">
+        <img src="./images/mini-verso3d_simbol.webp" alt="Exemplo de peça personalizada em impressão 3D"
+          loading="lazy" />
 
-      <section class="section section-highlight">
-        <div class="container">
-          <h2>Destaques</h2>
-          <ul class="chip-list">
-            <li>Action figures</li>
-            <li>Funkos</li>
-            <li>Bustos</li>
-            <li>Chaveiros</li>
-          </ul>
-        </div>
-      </section>
+        <span class="hero-image-label">MINI<strong>VERSO</strong> 3D</span>
+      </div>
+    </section>
 
-      <section class="section">
-        <div class="container two-columns">
-          <article class="card">
-            <h3>Materiais e acabamento</h3>
-            <p>Produção com <strong>PLA Premium</strong> e <strong>ABS</strong>.</p>
-            <p>Pintura artesanal à mão, com riqueza de detalhes.</p>
-          </article>
-          <article class="card">
-            <h3>Como funciona</h3>
-            <p>Não recebemos arquivo STL.</p>
-            <p>
-              A partir do pedido realizado, nossa equipe gera o modelo 3D em até <strong>48 horas</strong>.
-            </p>
-          </article>
+    <!-- PRODUTOS -->
+    <section id="produtos" aria-labelledby="produtos-title">
+      <span class="section-tag">O que criamos</span>
+      <h2 id="produtos-title">Produtos</h2>
+      <p class="section-lead">Peças únicas para presentear, decorar e eternizar momentos com acabamento premium.</p>
+      <div class="services-grid">
+        <article class="service-card">
+          <span class="service-icon" aria-hidden="true">💡</span>
+          <h3>Luminárias</h3>
+          <p>Luminárias temáticas exclusivas para decorar ambientes com personalidade e luz própria.</p>
+        </article>
+        <article class="service-card">
+          <span class="service-icon" aria-hidden="true">🧍</span>
+          <h3>Minimim</h3>
+          <p>Funko personalizado da sua cara — ou de quem você quer presentear. Cada rosto é único.</p>
+        </article>
+        <article class="service-card">
+          <span class="service-icon" aria-hidden="true">🐾</span>
+          <h3>Minipet</h3>
+          <p>Boneco 3D personalizado do seu animal de estimação com detalhes do pelo, cor e pose.</p>
+        </article>
+        <article class="service-card">
+          <span class="service-icon" aria-hidden="true">🎁</span>
+          <h3>MiniBox</h3>
+          <p>Caixinha especial com música e foto para eternizar momentos. O presente mais especial.</p>
+        </article>
+        <article class="service-card">
+          <span class="service-icon" aria-hidden="true">🥤</span>
+          <h3>Personalizados Monster</h3>
+          <p>Copo personalizado estilo Monster Energy e Luminária com a sua identidade.</p>
+        </article>
+        <article class="service-card">
+          <span class="service-icon" aria-hidden="true">🎨</span>
+          <h3>Arte Livre</h3>
+          <p>Tem uma ideia diferente? Desenvolvemos qualquer peça personalizada sob demanda.</p>
+        </article>
+      </div>
+      <div class="highlights">
+        <span class="highlights-label">Também fazemos</span>
+        <ul class="chip-list">
+          <li class="chip">Action Figures</li>
+          <li class="chip">Funkos</li>
+          <li class="chip">Bustos</li>
+          <li class="chip">Chaveiros</li>
+          <li class="chip">Miniaturas RPG</li>
+          <li class="chip">Esculturas</li>
+          <li class="chip">Enfeites de bolo</li>
+          <li class="chip">Porta-retratos</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- COMO FUNCIONA -->
+    <section id="como-funciona" aria-labelledby="como-funciona-title">
+      <span class="section-tag">Processo</span>
+      <h2 id="como-funciona-title">Como Funciona</h2>
+      <p class="section-lead">Você não precisa de arquivo 3D. Nossa equipe faz tudo — do modelo à entrega.</p>
+      <div class="steps">
+        <div class="step">
+          <h3>Faça seu pedido</h3>
+          <p>Envie fotos, referências ou descreva sua ideia. Sem necessidade de arquivo STL ou modelo pronto.</p>
         </div>
-      </section>
-    </main>
-  </body>
+        <div class="step">
+          <h3>Modelagem em 48h</h3>
+          <p>Nossa equipe cria o modelo 3D personalizado em até 48 horas e envia para sua aprovação.</p>
+        </div>
+        <div class="step">
+          <h3>Impressão & Pintura</h3>
+          <p>Após aprovação, imprimimos e aplicamos pintura artesanal à mão com riqueza de detalhes.</p>
+        </div>
+        <div class="step">
+          <h3>Entrega garantida</h3>
+          <p>Enviamos para todo o Brasil com rastreamento. Embalagem especial para a peça chegar perfeita.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- MATERIAIS -->
+    <section id="materiais" aria-labelledby="materiais-title">
+      <span class="section-tag">Qualidade</span>
+      <h2 id="materiais-title">Materiais & Acabamento</h2>
+      <p class="section-lead">Usamos os melhores materiais e pintura artesanal para garantir peças duráveis e ricas em
+        detalhes.</p>
+      <div class="materials-list">
+        <span class="material-tag highlight">PLA Premium</span>
+        <span class="material-tag highlight">ABS</span>
+        <span class="material-tag highlight">Pintura Artesanal</span>
+        <span class="material-tag">Acabamento Fosco</span>
+        <span class="material-tag">Acabamento Brilhante</span>
+        <span class="material-tag">Verniz Protetor</span>
+      </div>
+    </section>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Imagem ampliada">
+      <button class="lightbox-close" id="lightbox-close" aria-label="Fechar">×</button>
+      <img id="lightbox-img" src="" alt="Feedback do cliente" />
+    </div>
+
+    <!-- DEPOIMENTOS -->
+    <section id="depoimentos" aria-labelledby="depoimentos-title">
+      <span class="section-tag">Clientes</span>
+      <h2 id="depoimentos-title">O Que Dizem</h2>
+      <p class="section-lead">Cada peça entregue carrega uma história especial.</p>
+      <div class="carousel-wrapper" id="carousel-wrapper">
+        <div class="carousel-track" id="carousel-track">
+          <div class="feedback-item" onclick="openLightbox('./images/clients-feedback/feedback-1.webp')">
+            <img src="./images/clients-feedback/feedback-1.webp" alt="Feedback cliente 1" loading="lazy" />
+          </div>
+          <div class="feedback-item" onclick="openLightbox('./images/clients-feedback/feedback-2.webp')">
+            <img src="./images/clients-feedback/feedback-2.webp" alt="Feedback cliente 2" loading="lazy" />
+          </div>
+          <div class="feedback-item" onclick="openLightbox('./images/clients-feedback/feedback-3.webp')">
+            <img src="./images/clients-feedback/feedback-3.webp" alt="Feedback cliente 3" loading="lazy" />
+          </div>
+          <div class="feedback-item" onclick="openLightbox('./images/clients-feedback/feedback-4.webp')">
+            <img src="./images/clients-feedback/feedback-4.webp" alt="Feedback cliente 4" loading="lazy" />
+          </div>
+          <div class="feedback-item" onclick="openLightbox('./images/clients-feedback/feedback-5.webp')">
+            <img src="./images/clients-feedback/feedback-5.webp" alt="Feedback cliente 5" loading="lazy" />
+          </div>
+          <div class="feedback-item" onclick="openLightbox('./images/clients-feedback/feedback-6.webp')">
+            <img src="./images/clients-feedback/feedback-6.webp" alt="Feedback cliente 6" loading="lazy" />
+          </div>
+        </div>
+      </div>
+      <div class="carousel-dots" id="carousel-dots" aria-label="Navegação do carrossel"></div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" aria-labelledby="faq-title">
+      <span class="section-tag">Dúvidas</span>
+      <h2 id="faq-title">Perguntas Frequentes</h2>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>Preciso enviar um arquivo 3D?</summary>
+          <p>Não! Diferente de outras empresas, a MiniVerso 3D não recebe arquivos STL. A partir do seu pedido e das
+            referências que você enviar (fotos, descrição, referências visuais), nossa equipe cria o modelo 3D do zero
+            para você.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Quanto tempo leva para receber minha peça?</summary>
+          <p>O modelo 3D é criado em até 48 horas e enviado para aprovação. Após a aprovação, a impressão e pintura
+            levam de 3 a 7 dias úteis. O prazo de entrega depende da sua localização.</p>
+        </details>
+        <details class="faq-item">
+          <summary>As peças têm pintura incluída?</summary>
+          <p>Sim! Todas as nossas peças incluem pintura artesanal à mão. Cada detalhe é pintado com cuidado para
+            garantir o máximo de fidelidade e acabamento premium.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Vocês entregam para todo o Brasil?</summary>
+          <p>Sim, enviamos para todo o território nacional com rastreamento. As peças são embaladas com cuidado especial
+            para chegarem perfeitas até você.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Como faço para pedir uma peça fora da lista?</summary>
+          <p>Basta entrar em contato pelo formulário ou WhatsApp e descrever sua ideia. Desenvolvemos qualquer peça
+            personalizada — se você imaginou, a gente cria!</p>
+        </details>
+      </div>
+    </section>
+
+    <!-- CTA FINAL -->
+    <section id="contato" aria-labelledby="contato-title">
+      <span class="section-tag">Fale conosco</span>
+      <h2 id="contato-title">Pronto para Criar?</h2>
+      <p>Descreva sua ideia e receba um orçamento gratuito direto no WhatsApp.</p>
+      <div class="contact-form">
+        <input type="text" id="whatsapp-msg" placeholder="Descreva sua ideia..." autocomplete="off" />
+        <button type="button" onclick="sendWhatsApp()">Quero orçamento →</button>
+      </div>
+      <p style="margin-top:1.4rem; font-size:0.8rem; color:var(--muted);">
+        Resposta em até 2 horas via
+        <a href="https://wa.me/5579999278332" style="color:var(--cyan); text-decoration:none;" target="_blank"
+          rel="noopener">
+          WhatsApp ↗
+        </a>
+      </p>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">
+      <svg class="footer-cube" viewBox="0 0 100 112" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <polygon points="50,2 98,28 50,54 2,28" fill="#2d87ad" />
+        <polygon points="2,28 50,54 50,110 2,84" fill="#00bfc6" />
+        <polygon points="98,28 50,54 50,110 98,84" fill="#4a5cad" />
+      </svg>
+      MINI<span>VERSO</span> 3D
+    </div>
+    <p>© 2026 MiniVerso 3D. Todos os direitos reservados.</p>
+    <nav class="footer-links" aria-label="Links do rodapé">
+      <a href="#produtos">Produtos</a>
+      <a href="#contato">Contato</a>
+      <a href="https://instagram.com/3d_miniverso" rel="noopener" target="_blank">Instagram</a>
+    </nav>
+  </footer>
+
+  <script>
+    /* ── WhatsApp CTA ── */
+    function sendWhatsApp() {
+      var input = document.getElementById('whatsapp-msg');
+      var msg = (input && input.value.trim()) || 'Olá! Gostaria de um orçamento para uma peça personalizada.';
+      window.open('https://wa.me/5579999278332?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+    }
+
+    /* ── Lightbox ── */
+    function openLightbox(src) {
+      var lb = document.getElementById('lightbox');
+      var img = document.getElementById('lightbox-img');
+      img.src = src;
+      lb.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    document.getElementById('lightbox-close').addEventListener('click', closeLightbox);
+    document.getElementById('lightbox').addEventListener('click', function (e) {
+      if (e.target === this) closeLightbox();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeLightbox();
+    });
+
+    /* ── Carousel ── */
+    (function () {
+      var wrapper = document.getElementById('carousel-wrapper');
+      var track = document.getElementById('carousel-track');
+      var dotsContainer = document.getElementById('carousel-dots');
+      var items = Array.from(track.children);
+      var total = items.length;
+      var current = 0;
+      var autoTimer = null;
+      var INTERVAL = 3000;
+
+      function itemsPerView() {
+        return window.innerWidth < 600 ? 1 : 3;
+      }
+
+      function maxIndex() {
+        return total - itemsPerView();
+      }
+
+      function buildDots() {
+        dotsContainer.innerHTML = '';
+        var count = maxIndex() + 1;
+        for (var i = 0; i < count; i++) {
+          var btn = document.createElement('button');
+          btn.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+          btn.setAttribute('aria-label', 'Ir para slide ' + (i + 1));
+          btn.dataset.index = i;
+          btn.addEventListener('click', function () {
+            goTo(parseInt(this.dataset.index));
+            resetTimer();
+          });
+          dotsContainer.appendChild(btn);
+        }
+      }
+
+      function updateDots() {
+        Array.from(dotsContainer.children).forEach(function (dot, i) {
+          dot.classList.toggle('active', i === current);
+        });
+      }
+
+      function getOffset() {
+        var itemWidth = items[0].getBoundingClientRect().width;
+        var gap = 16; /* 1rem */
+        return current * (itemWidth + gap);
+      }
+
+      function goTo(index) {
+        current = Math.max(0, Math.min(index, maxIndex()));
+        track.style.transform = 'translateX(-' + getOffset() + 'px)';
+        updateDots();
+      }
+
+      function advance() {
+        goTo(current >= maxIndex() ? 0 : current + 1);
+      }
+
+      function startTimer() {
+        autoTimer = setInterval(advance, INTERVAL);
+      }
+
+      function resetTimer() {
+        clearInterval(autoTimer);
+        startTimer();
+      }
+
+      buildDots();
+      startTimer();
+
+      /* Pause on hover */
+      wrapper.addEventListener('mouseenter', function () { clearInterval(autoTimer); });
+      wrapper.addEventListener('mouseleave', startTimer);
+
+      /* Rebuild on resize */
+      window.addEventListener('resize', function () {
+        buildDots();
+        current = Math.min(current, maxIndex());
+        track.style.transition = 'none';
+        track.style.transform = 'translateX(-' + getOffset() + 'px)';
+        requestAnimationFrame(function () {
+          track.style.transition = '';
+        });
+        updateDots();
+      });
+    })();
+  </script>
+
+</body>
+
 </html>
