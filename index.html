@@ -21,7 +21,7 @@
   <meta property="og:title" content="MiniVerso 3D — Impressão 3D Personalizada" />
   <meta property="og:description"
     content="Miniaturas, luminárias e colecionáveis feitos sob medida com modelagem própria e pintura artesanal." />
-  <meta property="og:image" content="https://3dminiverso.com.br/og-image.jpg" />
+  <meta property="og:image" content="https://3dminiverso.com.br/images/icon/web-app-manifest-192x192.png" />
   <meta property="og:locale" content="pt_BR" />
 
   <!-- Twitter Card -->
@@ -29,6 +29,12 @@
   <meta name="twitter:title" content="MiniVerso 3D — Impressão 3D Personalizada" />
   <meta name="twitter:description"
     content="Transforme memórias em objetos únicos com impressão 3D artesanal e pintura à mão." />
+
+  <link rel="icon" type="image/png" href="/images/icon/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="/images/icon/favicon.svg" />
+  <link rel="shortcut icon" href="/images/icon/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/icon/apple-touch-icon.png" />
+  <link rel="manifest" href="/images/icon/site.webmanifest" />
 
   <!-- Schema.org JSON-LD (SEO estruturado) -->
   <script type="application/ld+json">
@@ -82,6 +88,7 @@
 
     html {
       scroll-behavior: smooth;
+      overflow-x: hidden;
     }
 
     body {
@@ -90,11 +97,10 @@
       font-family: var(--font-body);
       font-size: 16px;
       line-height: 1.6;
-      overflow-x: hidden;
     }
 
     /* ── NAV ── */
-    nav {
+    .main-nav {
       position: fixed;
       top: 0;
       left: 0;
@@ -128,15 +134,28 @@
       width: 28px;
       height: 28px;
       flex-shrink: 0;
+      animation: cube-glow 3s ease-in-out infinite;
     }
 
-    nav ul {
+    @keyframes cube-glow {
+
+      0%,
+      100% {
+        filter: drop-shadow(0 0 4px rgba(0, 191, 198, 0.3));
+      }
+
+      50% {
+        filter: drop-shadow(0 0 14px rgba(0, 191, 198, 0.75)) drop-shadow(0 0 28px rgba(45, 135, 173, 0.4));
+      }
+    }
+
+    .main-nav ul {
       display: flex;
       gap: 2rem;
       list-style: none;
     }
 
-    nav a {
+    .main-nav ul a {
       color: var(--muted);
       text-decoration: none;
       font-size: 0.85rem;
@@ -146,7 +165,7 @@
       transition: color 0.2s;
     }
 
-    nav a:hover {
+    .main-nav ul a:hover {
       color: var(--text);
     }
 
@@ -180,6 +199,24 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+    }
+
+    .hero-image img {
+      animation: hero-float 5s ease-in-out infinite;
+      filter:
+        drop-shadow(0 8px 24px rgba(0, 191, 198, 0.22)) drop-shadow(0 0 60px rgba(45, 135, 173, 0.15));
+    }
+
+    @keyframes hero-float {
+
+      0%,
+      100% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-20px);
+      }
     }
 
     .hero-image-label {
@@ -377,6 +414,7 @@
       transition: background 0.2s;
       position: relative;
       overflow: hidden;
+      min-height: 270px;
     }
 
     .service-card::before {
@@ -417,6 +455,63 @@
       font-size: 0.88rem;
       color: var(--muted);
       line-height: 1.7;
+    }
+
+    /* ── CARD PREVIEW IMAGE ── */
+    .card-preview {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      opacity: 0;
+      transform: scale(1.06);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      z-index: 0;
+    }
+
+    .service-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top,
+          rgba(7, 14, 20, 0.92) 0%,
+          rgba(7, 14, 20, 0.55) 55%,
+          rgba(7, 14, 20, 0.2) 100%);
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .service-card:hover .card-preview,
+    .service-card.card-active .card-preview {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .service-card:hover::after,
+    .service-card.card-active::after {
+      opacity: 1;
+    }
+
+    .service-card:hover p,
+    .service-card.card-active p {
+      color: #eef3f7;
+      text-shadow: 0 1px 6px rgba(0, 0, 0, 0.8);
+    }
+
+    .service-card:hover h3,
+    .service-card.card-active h3 {
+      text-shadow: 0 1px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .service-icon,
+    .service-card h3,
+    .service-card p {
+      position: relative;
+      z-index: 2;
     }
 
     /* ── CHIP LIST (também fazemos) ── */
@@ -759,6 +854,23 @@
       background: #00a8ae;
     }
 
+    .logo-nav {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      color: #FFF;
+    }
+
+    .logo-nav span {
+      color: var(--cyan);
+    }
+
+    .logo-nav-cube {
+      margin-right: 0.4rem;
+    }
+
     /* ── FOOTER ── */
     footer {
       border-top: 1px solid var(--border);
@@ -770,22 +882,6 @@
       gap: 1rem;
     }
 
-    .footer-logo {
-      font-family: var(--font-display);
-      font-size: 1.3rem;
-      display: flex;
-      align-items: center;
-    }
-
-    .footer-logo span {
-      color: var(--cyan);
-    }
-
-    .footer-cube {
-      width: 20px;
-      height: 20px;
-      margin-right: 0.4rem;
-    }
 
     footer p {
       font-size: 0.78rem;
@@ -839,7 +935,7 @@
 
     /* ── RESPONSIVE ── */
     @media (max-width: 600px) {
-      nav ul {
+      .main-nav ul {
         display: none;
       }
 
@@ -853,13 +949,10 @@
 <body>
 
   <!-- NAV -->
-  <nav aria-label="Navegação principal">
-    <a href="/" class="logo" aria-label="MiniVerso 3D — início">
-      <svg class="logo-cube" viewBox="0 0 100 112" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <polygon points="50,2 98,28 50,54 2,28" fill="#2d87ad" />
-        <polygon points="2,28 50,54 50,110 2,84" fill="#00bfc6" />
-        <polygon points="98,28 50,54 50,110 98,84" fill="#4a5cad" />
-      </svg>
+  <nav class="main-nav" aria-label="Navegação principal">
+    <a href="/" class="logo-nav" aria-label="MiniVerso 3D — início">
+      <img class="logo-nav-cube" src="./images/mini-verso3d_simbol.webp" width="32" height="32" alt="MiniVerso 3D"
+        loading="lazy" />
       MINI<span>VERSO</span> 3D
     </a>
     <ul>
@@ -867,7 +960,7 @@
       <li><a href="#como-funciona">Como funciona</a></li>
       <li><a href="#materiais">Materiais</a></li>
       <li><a href="#faq">FAQ</a></li>
-      <li><a href="#contato" class="nav-cta">Orçamento</a></li>
+      <li><a href="#contato" class="nav-cta">Fale com a gente</a></li>
     </ul>
   </nav>
 
@@ -888,7 +981,7 @@
           <a href="https://instagram.com/3d_miniverso" rel="noopener" target="_blank" class="btn-primary">
             Conheça nosso trabalho
           </a>
-          <a href="#contato" class="btn-primary">Solicitar orçamento</a>
+          <a href="#contato" class="btn-primary">Fale com a gente</a>
           <a href="#como-funciona" class="btn-ghost">Como funciona →</a>
         </div>
 
@@ -910,9 +1003,7 @@
       </div>
 
       <div class="hero-image" aria-hidden="true">
-        <img src="./images/mini-verso3d_simbol.webp" alt="Exemplo de peça personalizada em impressão 3D"
-          loading="lazy" />
-
+        <img src="./images/mini-verso3d_simbol.webp" alt="MiniVerso 3D" loading="lazy" />
         <span class="hero-image-label">MINI<strong>VERSO</strong> 3D</span>
       </div>
     </section>
@@ -924,32 +1015,38 @@
       <p class="section-lead">Peças únicas para presentear, decorar e eternizar momentos com acabamento premium.</p>
       <div class="services-grid">
         <article class="service-card">
-          <span class="service-icon" aria-hidden="true">💡</span>
+          <img class="card-preview" src="./images/product-banners/lumi.jpeg" alt="" loading="lazy"
+            aria-hidden="true" />
           <h3>Luminárias</h3>
           <p>Luminárias temáticas exclusivas para decorar ambientes com personalidade e luz própria.</p>
         </article>
         <article class="service-card">
-          <span class="service-icon" aria-hidden="true">🧍</span>
+          <img class="card-preview" src="./images/product-banners/minimin.jpg" alt="" loading="lazy"
+            aria-hidden="true" />
           <h3>Minimim</h3>
           <p>Funko personalizado da sua cara — ou de quem você quer presentear. Cada rosto é único.</p>
         </article>
         <article class="service-card">
-          <span class="service-icon" aria-hidden="true">🐾</span>
+          <img class="card-preview" src="./images/product-banners/minipet.webp" alt="" loading="lazy"
+            aria-hidden="true" />
           <h3>Minipet</h3>
           <p>Boneco 3D personalizado do seu animal de estimação com detalhes do pelo, cor e pose.</p>
         </article>
         <article class="service-card">
-          <span class="service-icon" aria-hidden="true">🎁</span>
+          <img class="card-preview" src="./images/product-banners/minibox.webp" alt="" loading="lazy"
+            aria-hidden="true" />
           <h3>MiniBox</h3>
           <p>Caixinha especial com música e foto para eternizar momentos. O presente mais especial.</p>
         </article>
         <article class="service-card">
-          <span class="service-icon" aria-hidden="true">🥤</span>
+          <img class="card-preview" src="./images/product-banners/monster.jpeg" alt="" loading="lazy"
+            aria-hidden="true" />
           <h3>Personalizados Monster</h3>
           <p>Copo personalizado estilo Monster Energy e Luminária com a sua identidade.</p>
         </article>
         <article class="service-card">
-          <span class="service-icon" aria-hidden="true">🎨</span>
+          <img class="card-preview" src="./images/product-banners/livre.webp" alt="" loading="lazy"
+            aria-hidden="true" />
           <h3>Arte Livre</h3>
           <p>Tem uma ideia diferente? Desenvolvemos qualquer peça personalizada sob demanda.</p>
         </article>
@@ -1101,12 +1198,10 @@
 
   <!-- FOOTER -->
   <footer>
-    <div class="footer-logo">
-      <svg class="footer-cube" viewBox="0 0 100 112" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <polygon points="50,2 98,28 50,54 2,28" fill="#2d87ad" />
-        <polygon points="2,28 50,54 50,110 2,84" fill="#00bfc6" />
-        <polygon points="98,28 50,54 50,110 98,84" fill="#4a5cad" />
-      </svg>
+    <div class="logo-nav">
+      <img class="logo-nav-cube" src="./images/mini-verso3d_simbol.webp" width="32" height="32" alt="MiniVerso 3D"
+        loading="lazy" />
+
       MINI<span>VERSO</span> 3D
     </div>
     <p>© 2026 MiniVerso 3D. Todos os direitos reservados.</p>
@@ -1144,6 +1239,25 @@
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') closeLightbox();
     });
+
+    /* ── Card preview por scroll (mobile) ── */
+    (function () {
+      var isMobile = window.matchMedia('(hover: none) and (pointer: coarse)');
+      function initObserver() {
+        if (!isMobile.matches) return;
+        var cards = document.querySelectorAll('.service-card');
+        var observer = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.target.querySelector('.card-preview')) {
+              entry.target.classList.toggle('card-active', entry.isIntersecting);
+            }
+          });
+        }, { threshold: 0.55 });
+        cards.forEach(function (card) { observer.observe(card); });
+      }
+      initObserver();
+      isMobile.addEventListener('change', initObserver);
+    })();
 
     /* ── Carousel ── */
     (function () {
