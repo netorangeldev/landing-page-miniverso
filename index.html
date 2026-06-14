@@ -630,7 +630,8 @@
         var(--surface);
       box-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.7);
       aspect-ratio: 4 / 3;
-      min-height: 360px;
+      /* min-height: 360px; */
+      
     }
 
     .viewer-stage::before {
@@ -1695,12 +1696,36 @@
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (reduceMotion) controls.autoRotate = false;
 
+      // raio e centro do modelo (definidos após o load) para enquadrar a câmera
+      let modelRadius = 0;
+      const modelCenter = new THREE.Vector3(0, 0, 0);
+
+      // posiciona a câmera para o modelo caber por inteiro e ficar centralizado.
+      // usa a bounding SPHERE (invariante à rotação), então cabe em qualquer
+      // ângulo do auto-rotate sem ser cortado.
+      function frameModel() {
+        if (!modelRadius) return;
+        const vFov = camera.fov * Math.PI / 180;
+        // distância para a esfera caber na vertical
+        const distV = modelRadius / Math.sin(vFov / 2);
+        // distância para a esfera caber na horizontal (limite em telas estreitas)
+        const hFov = 2 * Math.atan(Math.tan(vFov / 2) * camera.aspect);
+        const distH = modelRadius / Math.sin(hFov / 2);
+        // usa a maior das duas + folga generosa (modelo gira)
+        const dist = Math.max(distV, distH) * 1.35;
+        // olha de frente, na mesma altura do centro → modelo centralizado
+        camera.position.set(modelCenter.x, modelCenter.y, modelCenter.z + dist);
+        controls.target.copy(modelCenter);
+        controls.update();
+      }
+
       function resize() {
         const w = cont.clientWidth || 1;
         const h = cont.clientHeight || 1;
         camera.aspect = w / h;
         camera.updateProjectionMatrix();
         renderer.setSize(w, h, false);
+        frameModel();
       }
       resize();
       window.addEventListener('resize', resize);
@@ -1709,8 +1734,11 @@
       loader.load(
         STL_URL,
         function (geometry) {
-          geometry.computeVertexNormals();
+          // STL costuma vir com Z para cima — gira a geometria para ficar de pé
+          geometry.rotateX(-Math.PI / 2);
+          // centraliza a geometria na origem (após a rotação)
           geometry.center();
+          geometry.computeVertexNormals();
 
           const material = new THREE.MeshPhongMaterial({
             color: 0x2db8c6,
@@ -1719,17 +1747,13 @@
             flatShading: false
           });
           const mesh = new THREE.Mesh(geometry, material);
-          // STL costuma vir com Z para cima — gira para ficar de pé
-          mesh.rotation.x = -Math.PI / 2;
           scene.add(mesh);
 
-          // enquadra a câmera com base no tamanho do modelo
+          // enquadra a câmera com base no tamanho do modelo (centro na origem)
           geometry.computeBoundingSphere();
-          const r = geometry.boundingSphere.radius;
-          const dist = r / Math.sin((camera.fov / 2) * Math.PI / 180);
-          camera.position.set(0, r * 0.4, dist * 1.25);
-          controls.target.set(0, 0, 0);
-          controls.update();
+          modelRadius = geometry.boundingSphere.radius;
+          modelCenter.set(0, 0, 0);
+          frameModel();
 
           hideLoader();
         },
