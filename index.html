@@ -400,118 +400,175 @@
       background: var(--surface);
     }
 
+    /* linhas amplas alternadas (zig-zag), estilo landing page moderna */
     .services-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1.5px;
-      background: var(--border);
-      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 7rem;
+      margin-top: 4rem;
     }
 
     .service-card {
-      background: var(--surface);
-      padding: 2.4rem 2rem;
-      transition: background 0.2s;
-      position: relative;
-      overflow: hidden;
-      min-height: 270px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 4rem;
     }
 
-    .service-card::before {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 2px;
-      background: var(--cyan);
-      transform: scaleX(0);
-      transition: transform 0.3s;
-      transform-origin: left;
+    /* zig-zag: cards pares invertem a ordem (imagem à direita) */
+    .service-card:nth-child(even) .card-media {
+      order: 2;
     }
 
-    .service-card:hover::before {
-      transform: scaleX(1);
-    }
-
-    .service-card:hover {
-      background: #111f2c;
+    /* ── COLUNA DE TEXTO (sempre visível) ── */
+    .card-body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 1.2rem;
     }
 
     .service-icon {
-      font-size: 2rem;
-      margin-bottom: 1.2rem;
+      font-size: 2.2rem;
       display: block;
     }
 
     .service-card h3 {
       font-family: var(--font-display);
-      font-size: 1.4rem;
-      letter-spacing: 0.03em;
-      margin-bottom: 0.6rem;
+      font-size: clamp(2.2rem, 4vw, 3.4rem);
+      line-height: 1.05;
+      letter-spacing: 0.02em;
+      color: var(--text);
     }
 
     .service-card p {
-      font-size: 0.88rem;
+      font-size: 1.02rem;
       color: var(--muted);
-      line-height: 1.7;
+      line-height: 1.8;
+      max-width: 42ch;
     }
 
-    /* ── CARD PREVIEW IMAGE ── */
-    .card-preview {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center top;
-      opacity: 0;
-      transform: scale(1.06);
-      transition: opacity 0.5s ease, transform 0.5s ease;
-      z-index: 0;
+    /* ── COLUNA DA IMAGEM: flutua sobre blobs ── */
+    .card-media {
+      position: relative;
+      min-height: 360px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: zoom-in;
     }
 
-    .service-card::after {
+    /* dois blobs orgânicos ciano/teal atrás da imagem */
+    .card-media::before,
+    .card-media::after {
       content: '';
       position: absolute;
-      inset: 0;
-      background: linear-gradient(to top,
-          rgba(7, 14, 20, 0.92) 0%,
-          rgba(7, 14, 20, 0.55) 55%,
-          rgba(7, 14, 20, 0.2) 100%);
-      opacity: 0;
-      transition: opacity 0.5s ease;
-      z-index: 1;
-      pointer-events: none;
+      z-index: 0;
+      border-radius: 42% 58% 63% 37% / 41% 44% 56% 59%;
+      filter: blur(2px);
+      opacity: 0.55;
+      will-change: transform;
+      animation: blob-float 9s ease-in-out infinite;
     }
 
-    .service-card:hover .card-preview,
-    .service-card.card-active .card-preview {
-      opacity: 1;
-      transform: scale(1);
+    .card-media::before {
+      width: 62%;
+      height: 78%;
+      top: -6%;
+      left: 4%;
+      background: linear-gradient(135deg, var(--cyan), var(--teal));
     }
 
-    .service-card:hover::after,
-    .service-card.card-active::after {
-      opacity: 1;
+    .card-media::after {
+      width: 58%;
+      height: 64%;
+      bottom: -8%;
+      right: 2%;
+      background: linear-gradient(135deg, var(--indigo), var(--teal));
+      border-radius: 58% 42% 37% 63% / 56% 59% 41% 44%;
+      animation-delay: -4.5s;
+      opacity: 0.4;
     }
 
-    .service-card:hover p,
-    .service-card.card-active p {
-      color: #eef3f7;
-      text-shadow: 0 1px 6px rgba(0, 0, 0, 0.8);
+    @keyframes blob-float {
+
+      0%,
+      100% {
+        transform: translate(0, 0) scale(1) rotate(0deg);
+      }
+
+      50% {
+        transform: translate(0, -14px) scale(1.05) rotate(6deg);
+      }
     }
 
-    .service-card:hover h3,
-    .service-card.card-active h3 {
-      text-shadow: 0 1px 8px rgba(0, 0, 0, 0.9);
-    }
-
-    .service-icon,
-    .service-card h3,
-    .service-card p {
+    /* imagem dentro de moldura arredondada, recortada (cover) */
+    .card-preview {
       position: relative;
-      z-index: 2;
+      z-index: 1;
+      width: 86%;
+      max-width: 460px;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      object-position: center;
+      border-radius: 18px;
+      box-shadow: 0 24px 60px -18px rgba(0, 0, 0, 0.7),
+        0 0 0 1px rgba(255, 255, 255, 0.04);
+      /* escondida até o card ser revelado */
+      opacity: 0;
+      transform: translateY(24px) scale(0.97);
+      transition: opacity 0.8s ease, transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .service-card.is-revealed .card-preview {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .service-card:hover .card-preview {
+      transform: translateY(-6px) scale(1.02);
+      box-shadow: 0 32px 70px -16px rgba(0, 0, 0, 0.75),
+        0 0 0 1px rgba(0, 191, 198, 0.25);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+      .card-preview {
+        transition: none;
+        opacity: 1;
+        transform: none;
+      }
+
+      .card-media::before,
+      .card-media::after {
+        animation: none;
+      }
+    }
+
+    /* empilha imagem em cima / texto embaixo em telas pequenas */
+    @media (max-width: 760px) {
+      .services-grid {
+        gap: 4.5rem;
+      }
+
+      .service-card,
+      .service-card:nth-child(even) {
+        grid-template-columns: 1fr;
+        gap: 1.8rem;
+      }
+
+      .service-card .card-media,
+      .service-card:nth-child(even) .card-media {
+        order: 0;
+      }
+
+      .card-media {
+        min-height: 280px;
+      }
+
+      .service-card p {
+        max-width: none;
+      }
     }
 
     /* ── CHIP LIST (também fazemos) ── */
@@ -548,6 +605,150 @@
     .chip:hover {
       border-color: var(--cyan);
       color: var(--cyan);
+    }
+
+    /* ── VISUALIZADOR 3D (STL) ── */
+    #visualizador-3d {
+      background: var(--bg);
+    }
+
+    .viewer-3d-wrap {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 3.5rem;
+      align-items: center;
+      margin-top: 3rem;
+    }
+
+    .viewer-stage {
+      position: relative;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 50% 40%, rgba(0, 191, 198, 0.12), transparent 70%),
+        var(--surface);
+      box-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.7);
+      aspect-ratio: 4 / 3;
+      min-height: 360px;
+    }
+
+    .viewer-stage::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+      box-shadow: inset 0 0 80px -20px rgba(0, 191, 198, 0.25);
+      border-radius: inherit;
+    }
+
+    #stl-viewer {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .viewer-loading {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.9rem;
+      color: var(--muted);
+      font-size: 0.85rem;
+      letter-spacing: 0.04em;
+      z-index: 1;
+      transition: opacity 0.4s ease;
+    }
+
+    .viewer-loading.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .viewer-spinner {
+      width: 34px;
+      height: 34px;
+      border: 3px solid var(--border);
+      border-top-color: var(--cyan);
+      border-radius: 50%;
+      animation: viewer-spin 0.9s linear infinite;
+    }
+
+    @keyframes viewer-spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .viewer-hint {
+      position: absolute;
+      bottom: 0.9rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+      font-size: 0.72rem;
+      color: var(--muted);
+      background: rgba(7, 14, 20, 0.7);
+      backdrop-filter: blur(6px);
+      border: 1px solid var(--border);
+      padding: 0.35rem 0.9rem;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    .viewer-copy h3 {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+
+    .viewer-copy p {
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 1.4rem;
+      max-width: 46ch;
+    }
+
+    .viewer-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .viewer-features li {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      font-size: 0.92rem;
+      color: var(--text);
+    }
+
+    .viewer-features li::before {
+      content: '';
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 10px var(--cyan);
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 820px) {
+      .viewer-3d-wrap {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      .viewer-copy {
+        order: -1;
+      }
     }
 
     /* ── COMO FUNCIONA ── */
@@ -708,8 +909,11 @@
     }
 
     .lightbox img {
-      max-width: min(92vw, 480px);
+      max-width: 92vw;
       max-height: 90vh;
+      width: auto;
+      height: auto;
+      object-fit: contain;
       border-radius: 10px;
       box-shadow: 0 8px 60px rgba(0, 0, 0, 0.7);
     }
@@ -935,7 +1139,7 @@
 
     /* ── RESPONSIVE ── */
     @media (max-width: 600px) {
-      .main-nav ul {
+      .main-nav ul li:not(.is-mobile) {
         display: none;
       }
 
@@ -957,10 +1161,12 @@
     </a>
     <ul>
       <li><a href="#produtos">Produtos</a></li>
+      <li><a href="#visualizador-3d">Visualizador 3D</a></li>
       <li><a href="#como-funciona">Como funciona</a></li>
       <li><a href="#materiais">Materiais</a></li>
       <li><a href="#faq">FAQ</a></li>
-      <li><a href="#contato" class="nav-cta">Fale com a gente</a></li>
+      <li class="is-mobile"><a href="#contato" class="nav-cta">Fale com a gente</a></li>
+
     </ul>
   </nav>
 
@@ -1015,40 +1221,64 @@
       <p class="section-lead">Peças únicas para presentear, decorar e eternizar momentos com acabamento premium.</p>
       <div class="services-grid">
         <article class="service-card">
-          <img class="card-preview" src="./images/product-banners/lumi.jpeg" alt="" loading="lazy"
-            aria-hidden="true" />
-          <h3>Luminárias</h3>
-          <p>Luminárias temáticas exclusivas para decorar ambientes com personalidade e luz própria.</p>
+          <div class="card-media">
+            <img class="card-preview" src="./images/product-banners/lumi.jpeg"
+              alt="Luminária temática personalizada MiniVerso" loading="lazy" />
+          </div>
+          <div class="card-body">
+            <h3>Luminárias</h3>
+            <p>Luminárias temáticas exclusivas para decorar ambientes com personalidade e luz própria.</p>
+          </div>
         </article>
         <article class="service-card">
-          <img class="card-preview" src="./images/product-banners/minimin.jpg" alt="" loading="lazy"
-            aria-hidden="true" />
-          <h3>Minimim</h3>
-          <p>Funko personalizado da sua cara — ou de quem você quer presentear. Cada rosto é único.</p>
+          <div class="card-media">
+            <img class="card-preview" src="./images/product-banners/minimin.jpg"
+              alt="Funko personalizado Minimim MiniVerso" loading="lazy" />
+          </div>
+          <div class="card-body">
+            <h3>Minimim</h3>
+            <p>Funko personalizado da sua cara — ou de quem você quer presentear. Cada rosto é único.</p>
+          </div>
         </article>
         <article class="service-card">
-          <img class="card-preview" src="./images/product-banners/minipet.webp" alt="" loading="lazy"
-            aria-hidden="true" />
-          <h3>Minipet</h3>
-          <p>Boneco 3D personalizado do seu animal de estimação com detalhes do pelo, cor e pose.</p>
+          <div class="card-media">
+            <img class="card-preview" src="./images/product-banners/minipet.webp"
+              alt="Boneco 3D personalizado de pet Minipet" loading="lazy" />
+          </div>
+          <div class="card-body">
+            <h3>Minipet</h3>
+            <p>Boneco 3D personalizado do seu animal de estimação com detalhes do pelo, cor e pose.</p>
+          </div>
         </article>
         <article class="service-card">
-          <img class="card-preview" src="./images/product-banners/minibox.webp" alt="" loading="lazy"
-            aria-hidden="true" />
-          <h3>MiniBox</h3>
-          <p>Caixinha especial com música e foto para eternizar momentos. O presente mais especial.</p>
+          <div class="card-media">
+            <img class="card-preview" src="./images/product-banners/minibox.webp"
+              alt="MiniBox com música e foto personalizada" loading="lazy" />
+          </div>
+          <div class="card-body">
+            <h3>MiniBox</h3>
+            <p>Caixinha especial com música e foto para eternizar momentos. O presente mais especial.</p>
+          </div>
         </article>
         <article class="service-card">
-          <img class="card-preview" src="./images/product-banners/monster.jpeg" alt="" loading="lazy"
-            aria-hidden="true" />
-          <h3>Personalizados Monster</h3>
-          <p>Copo personalizado estilo Monster Energy e Luminária com a sua identidade.</p>
+          <div class="card-media">
+            <img class="card-preview" src="./images/product-banners/monster.jpeg"
+              alt="Copo e luminária personalizados estilo Monster" loading="lazy" />
+          </div>
+          <div class="card-body">
+            <h3>Personalizados Monster</h3>
+            <p>Copo personalizado estilo Monster Energy e Luminária com a sua identidade.</p>
+          </div>
         </article>
         <article class="service-card">
-          <img class="card-preview" src="./images/product-banners/livre.webp" alt="" loading="lazy"
-            aria-hidden="true" />
-          <h3>Arte Livre</h3>
-          <p>Tem uma ideia diferente? Desenvolvemos qualquer peça personalizada sob demanda.</p>
+          <div class="card-media">
+            <img class="card-preview" src="./images/product-banners/livre.webp"
+              alt="Peça personalizada sob demanda Arte Livre" loading="lazy" />
+          </div>
+          <div class="card-body">
+            <h3>Arte Livre</h3>
+            <p>Tem uma ideia diferente? Desenvolvemos qualquer peça personalizada sob demanda.</p>
+          </div>
         </article>
       </div>
       <div class="highlights">
@@ -1063,6 +1293,34 @@
           <li class="chip">Enfeites de bolo</li>
           <li class="chip">Porta-retratos</li>
         </ul>
+      </div>
+    </section>
+
+    <!-- VISUALIZADOR 3D (STL) -->
+    <section id="visualizador-3d" aria-labelledby="visualizador-3d-title">
+      <span class="section-tag">Tecnologia</span>
+      <h2 id="visualizador-3d-title">Veja em 3D antes de imprimir</h2>
+      <p class="section-lead">Gire, aproxime e explore o modelo de qualquer ângulo — a mesma visão que temos antes de
+        cada impressão.</p>
+      <div class="viewer-3d-wrap">
+        <div class="viewer-stage">
+          <div id="stl-viewer"></div>
+          <div class="viewer-loading" id="viewer-loading">
+            <div class="viewer-spinner" aria-hidden="true"></div>
+            <span>Carregando modelo 3D…</span>
+          </div>
+          <span class="viewer-hint" aria-hidden="true">Arraste para girar · scroll para zoom</span>
+        </div>
+        <div class="viewer-copy">
+          <h3>Precisão de cada detalhe</h3>
+          <p>Modelamos cada peça em 3D e entregamos exatamente o que você vê. Este é um exemplo real de modelo
+            preparado para impressão.</p>
+          <ul class="viewer-features">
+            <li>Modelagem própria sob medida</li>
+            <li>Aprovação visual antes de imprimir</li>
+            <li>Acabamento e pintura artesanal</li>
+          </ul>
+        </div>
       </div>
     </section>
 
@@ -1221,10 +1479,11 @@
     }
 
     /* ── Lightbox ── */
-    function openLightbox(src) {
+    function openLightbox(src, alt) {
       var lb = document.getElementById('lightbox');
       var img = document.getElementById('lightbox-img');
       img.src = src;
+      img.alt = alt || 'Imagem ampliada';
       lb.classList.add('open');
       document.body.style.overflow = 'hidden';
     }
@@ -1240,23 +1499,53 @@
       if (e.key === 'Escape') closeLightbox();
     });
 
-    /* ── Card preview por scroll (mobile) ── */
+    /* ── Reveal dos produtos em cascata ao entrar na seção ── */
     (function () {
-      var isMobile = window.matchMedia('(hover: none) and (pointer: coarse)');
-      function initObserver() {
-        if (!isMobile.matches) return;
-        var cards = document.querySelectorAll('.service-card');
-        var observer = new IntersectionObserver(function (entries) {
-          entries.forEach(function (entry) {
-            if (entry.target.querySelector('.card-preview')) {
-              entry.target.classList.toggle('card-active', entry.isIntersecting);
-            }
-          });
-        }, { threshold: 0.55 });
-        cards.forEach(function (card) { observer.observe(card); });
+      var cards = document.querySelectorAll('.service-card');
+      if (!cards.length) return;
+
+      var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (reduceMotion || !('IntersectionObserver' in window)) {
+        cards.forEach(function (card) { card.classList.add('is-revealed'); });
+        return;
       }
-      initObserver();
-      isMobile.addEventListener('change', initObserver);
+
+      var observer = new IntersectionObserver(function (entries, obs) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          var card = entry.target;
+          var index = Number(card.dataset.revealIndex || 0);
+          var img = card.querySelector('.card-preview');
+          if (img) {
+            // stagger: cada imagem aparece um pouco depois da anterior
+            img.style.transitionDelay = (index * 120) + 'ms';
+            // remove o delay após o reveal para não atrasar o zoom no hover
+            img.addEventListener('transitionend', function clearDelay() {
+              img.style.transitionDelay = '';
+              img.removeEventListener('transitionend', clearDelay);
+            });
+          }
+          card.classList.add('is-revealed');
+          obs.unobserve(card);
+        });
+      }, { threshold: 0.2, rootMargin: '0px 0px -10% 0px' });
+
+      cards.forEach(function (card, i) {
+        card.dataset.revealIndex = i;
+        observer.observe(card);
+      });
+    })();
+
+    /* ── Clique na imagem do produto exibe a foto inteira ── */
+    (function () {
+      document.querySelectorAll('.service-card .card-media').forEach(function (media) {
+        var img = media.querySelector('.card-preview');
+        if (!img) return;
+        media.addEventListener('click', function () {
+          openLightbox(img.src, img.alt);
+        });
+      });
     })();
 
     /* ── Carousel ── */
@@ -1344,6 +1633,123 @@
         updateDots();
       });
     })();
+  </script>
+
+  <!-- Visualizador 3D (STL) — three.js + STLLoader oficial -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+  <script type="module">
+    import * as THREE from 'three';
+    import { STLLoader } from 'three/addons/loaders/STLLoader.js';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+    const cont = document.getElementById('stl-viewer');
+    const loading = document.getElementById('viewer-loading');
+    const STL_URL = 'images/stl/Deadpool_Base.stl';
+
+    function setLoadingText(t) {
+      if (loading) loading.querySelector('span').textContent = t;
+    }
+    function hideLoader() {
+      if (loading) loading.classList.add('hidden');
+    }
+
+    if (!cont) {
+      // nada a fazer
+    } else if (!(window.WebGLRenderingContext)) {
+      setLoadingText('Seu navegador não suporta WebGL.');
+    } else {
+      const scene = new THREE.Scene();
+
+      const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 5000);
+      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setClearColor(0x000000, 0); // fundo transparente
+      cont.appendChild(renderer.domElement);
+
+      // iluminação
+      scene.add(new THREE.AmbientLight(0xffffff, 0.55));
+      const key = new THREE.DirectionalLight(0x00bfc6, 1.4);
+      key.position.set(1, 1, 1);
+      scene.add(key);
+      const fill = new THREE.DirectionalLight(0x4a5cad, 0.9);
+      fill.position.set(-1, 0.5, -1);
+      scene.add(fill);
+      const rim = new THREE.DirectionalLight(0xffffff, 0.6);
+      rim.position.set(0, -1, 0.5);
+      scene.add(rim);
+
+      const controls = new OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true;
+      controls.dampingFactor = 0.08;
+      controls.enablePan = false;
+      controls.autoRotate = true;
+      controls.autoRotateSpeed = 1.6;
+
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduceMotion) controls.autoRotate = false;
+
+      function resize() {
+        const w = cont.clientWidth || 1;
+        const h = cont.clientHeight || 1;
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+        renderer.setSize(w, h, false);
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      const loader = new STLLoader();
+      loader.load(
+        STL_URL,
+        function (geometry) {
+          geometry.computeVertexNormals();
+          geometry.center();
+
+          const material = new THREE.MeshPhongMaterial({
+            color: 0x2db8c6,
+            specular: 0x111111,
+            shininess: 35,
+            flatShading: false
+          });
+          const mesh = new THREE.Mesh(geometry, material);
+          // STL costuma vir com Z para cima — gira para ficar de pé
+          mesh.rotation.x = -Math.PI / 2;
+          scene.add(mesh);
+
+          // enquadra a câmera com base no tamanho do modelo
+          geometry.computeBoundingSphere();
+          const r = geometry.boundingSphere.radius;
+          const dist = r / Math.sin((camera.fov / 2) * Math.PI / 180);
+          camera.position.set(0, r * 0.4, dist * 1.25);
+          controls.target.set(0, 0, 0);
+          controls.update();
+
+          hideLoader();
+        },
+        function (xhr) {
+          if (xhr.lengthComputable) {
+            const pct = Math.round((xhr.loaded / xhr.total) * 100);
+            setLoadingText('Carregando modelo 3D… ' + pct + '%');
+          }
+        },
+        function () {
+          setLoadingText('Erro ao carregar o modelo 3D.');
+        }
+      );
+
+      (function animate() {
+        requestAnimationFrame(animate);
+        controls.update();
+        renderer.render(scene, camera);
+      })();
+    }
   </script>
 
   <!-- Vercel Web Analytics -->
