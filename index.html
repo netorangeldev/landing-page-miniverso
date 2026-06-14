@@ -741,14 +741,16 @@
       flex-shrink: 0;
     }
 
+    /* o visualizador 3D é ocultado no mobile (enquadramento instável em telas
+       pequenas + custo de processamento alto em navegadores in-app) */
     @media (max-width: 820px) {
-      .viewer-3d-wrap {
-        grid-template-columns: 1fr;
-        gap: 2rem;
+      #visualizador-3d {
+        display: none;
       }
 
-      .viewer-copy {
-        order: -1;
+      /* esconde o link do menu já que a seção não existe no mobile */
+      .nav-viewer-3d {
+        display: none;
       }
     }
 
@@ -1162,7 +1164,7 @@
     </a>
     <ul>
       <li><a href="#produtos">Produtos</a></li>
-      <li><a href="#visualizador-3d">Visualizador 3D</a></li>
+      <li class="nav-viewer-3d"><a href="#visualizador-3d">Visualizador 3D</a></li>
       <li><a href="#como-funciona">Como funciona</a></li>
       <li><a href="#materiais">Materiais</a></li>
       <li><a href="#faq">FAQ</a></li>
@@ -1661,11 +1663,9 @@
       if (loading) loading.classList.add('hidden');
     }
 
-    if (!cont) {
-      // nada a fazer
-    } else if (!(window.WebGLRenderingContext)) {
-      setLoadingText('Seu navegador não suporta WebGL.');
-    } else {
+    // só inicializa o visualizador (contexto WebGL + download do STL de ~18 MB)
+    // quando a seção entra na viewport — evita peso de processamento no load inicial
+    function initViewer() {
       const scene = new THREE.Scene();
 
       const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 5000);
@@ -1702,33 +1702,49 @@
 
       // posiciona a câmera para o modelo caber por inteiro e ficar centralizado.
       // usa a bounding SPHERE (invariante à rotação), então cabe em qualquer
-      // ângulo do auto-rotate sem ser cortado.
+      // ângulo do auto-rotate sem ser cortado. Lê o aspect REAL do canvas na
+      // hora (não confia em camera.aspect, que pode estar desatualizado).
       function frameModel() {
         if (!modelRadius) return;
+        const w = cont.clientWidth || 1;
+        const h = cont.clientHeight || 1;
+        const aspect = w / h;
         const vFov = camera.fov * Math.PI / 180;
-        // distância para a esfera caber na vertical
         const distV = modelRadius / Math.sin(vFov / 2);
-        // distância para a esfera caber na horizontal (limite em telas estreitas)
-        const hFov = 2 * Math.atan(Math.tan(vFov / 2) * camera.aspect);
+        const hFov = 2 * Math.atan(Math.tan(vFov / 2) * aspect);
         const distH = modelRadius / Math.sin(hFov / 2);
-        // usa a maior das duas + folga generosa (modelo gira)
-        const dist = Math.max(distV, distH) * 1.35;
+        // usa a maior das duas + folga generosa (modelo gira e tem partes salientes)
+        const dist = Math.max(distV, distH) * 1.5;
         // olha de frente, na mesma altura do centro → modelo centralizado
         camera.position.set(modelCenter.x, modelCenter.y, modelCenter.z + dist);
         controls.target.copy(modelCenter);
         controls.update();
       }
 
+      let lastW = 0, lastH = 0;
       function resize() {
         const w = cont.clientWidth || 1;
         const h = cont.clientHeight || 1;
-        camera.aspect = w / h;
-        camera.updateProjectionMatrix();
-        renderer.setSize(w, h, false);
+        // só refaz o trabalho caro (setSize) se mudou de fato…
+        if (w !== lastW || h !== lastH) {
+          lastW = w; lastH = h;
+          camera.aspect = w / h;
+          camera.updateProjectionMatrix();
+          renderer.setSize(w, h, false);
+        }
+        // …mas SEMPRE reenquadra com o aspect atual
         frameModel();
       }
       resize();
-      window.addEventListener('resize', resize);
+
+      // ResizeObserver dispara quando o container ganha/altera tamanho —
+      // mais confiável no mobile que o window.resize (barra de endereço,
+      // rotação de tela, layout que só estabiliza após o load).
+      if ('ResizeObserver' in window) {
+        new ResizeObserver(resize).observe(cont);
+      } else {
+        window.addEventListener('resize', resize);
+      }
 
       const loader = new STLLoader();
       loader.load(
@@ -1753,7 +1769,13 @@
           geometry.computeBoundingSphere();
           modelRadius = geometry.boundingSphere.radius;
           modelCenter.set(0, 0, 0);
+          // reenquadra já e de novo após o layout estabilizar — cobre o caso
+          // de o modelo carregar antes do canvas ter o tamanho final no mobile
           frameModel();
+          requestAnimationFrame(function () {
+            requestAnimationFrame(frameModel);
+          });
+          setTimeout(frameModel, 300);
 
           hideLoader();
         },
@@ -1768,12 +1790,63 @@
         }
       );
 
-      (function animate() {
-        requestAnimationFrame(animate);
+      // render loop pausável: só anima enquanto a seção está visível
+      let rafId = null;
+      function animate() {
+        rafId = requestAnimationFrame(animate);
         controls.update();
         renderer.render(scene, camera);
-      })();
+      }
+      function startLoop() { if (rafId === null) animate(); }
+      function stopLoop() {
+        if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; }
+      }
+      startLoop();
+
+      // pausa a renderização quando a seção sai da tela (economia de CPU/GPU)
+      const section = document.getElementById('visualizador-3d');
+      if (section && 'IntersectionObserver' in window) {
+        new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) startLoop(); else stopLoop();
+          });
+        }, { threshold: 0 }).observe(section);
+      }
     }
+
+    // dispara a inicialização só quando a seção se aproxima da viewport
+    (function () {
+      const section = document.getElementById('visualizador-3d');
+      if (!cont || !section) {
+        return;
+      }
+      // no mobile a seção é ocultada (CSS) — não inicializa WebGL nem baixa o STL
+      if (window.matchMedia('(max-width: 820px)').matches) {
+        return;
+      }
+      if (!(window.WebGLRenderingContext)) {
+        setLoadingText('Seu navegador não suporta WebGL.');
+        return;
+      }
+
+      let started = false;
+      function start() {
+        if (started) return;
+        started = true;
+        initViewer();
+      }
+
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver(function (entries, obs) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) { start(); obs.disconnect(); }
+          });
+        }, { rootMargin: '200px 0px' }); // começa a carregar um pouco antes de aparecer
+        io.observe(section);
+      } else {
+        start();
+      }
+    })();
   </script>
 
   <!-- Vercel Web Analytics -->
